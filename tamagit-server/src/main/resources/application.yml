@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: tamagit-server
+  # Los valores por defecto son solo para desarrollo local; en la VM llegan por variables de entorno (.env)
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/tamagit}
+    username: ${DB_USER:tamagit}
+    password: ${DB_PASSWORD:tamagit}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+server:
+  forward-headers-strategy: native
+
+management:
+  endpoint:
+    health:
+      # Boot 4 activa las probes de Kubernetes por defecto; aquí no se usan
+      probes:
+        enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health

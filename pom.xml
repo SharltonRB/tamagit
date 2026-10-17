@@ -22,7 +22,8 @@
 
     <modules>
         <module>tamagit-core</module>
-        <!-- tamagit-cli y tamagit-server se agregan en H0-04 -->
+        <module>tamagit-cli</module>
+        <module>tamagit-server</module>
     </modules>
 
     <properties>
@@ -72,6 +73,10 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <!-- Spring necesita los nombres de parámetros (lo que haría spring-boot-starter-parent) -->
+                        <parameters>true</parameters>
+                    </configuration>
                 </plugin>
                 <!-- Pruebas unitarias: *Test -->
                 <plugin>
@@ -93,6 +98,8 @@
                         <includes>
                             <include>**/*IT.java</include>
                         </includes>
+                        <!-- Usa las clases compiladas, no el jar que reempaqueta spring-boot-maven-plugin -->
+                        <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                     </configuration>
                     <executions>
                         <execution>
@@ -107,6 +114,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${maven-enforcer-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

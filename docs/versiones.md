@@ -11,6 +11,7 @@
 | Java (Temurin) | 25.0.4.1+1 (LTS) | 2026-08-18 | https://api.adoptium.net/v3/assets/latest/25/hotspot |
 | Maven | 3.10.0 | 2026-09-27 | https://repo1.maven.org/maven2/org/apache/maven/apache-maven/ |
 | GraalVM CE (Java 25) | 25.4.4.1.1 (`graal-25.4.4.1.1`) | 2026-09-22 | https://github.com/graalvm/graalvm-ce-builds/releases |
+| PostgreSQL (imagen de pruebas) | `postgres:18-alpine` (18.6), última mayor | — | https://hub.docker.com/_/postgres |
 
 - Maven 4.0.0 sigue en *release candidate* (`4.0.0-rc-7`), así que se usa la 3.10.0, la última estable. El wrapper (`./mvnw`) la fija y el enforcer exige ≥ 3.10.0.
 - GraalVM no se instala hasta H1.
@@ -46,6 +47,10 @@
   Como el POM padre importa el BOM de Boot, `cli` y `server` usan la misma versión de Jackson 3 (3.1.5). Las anotaciones siguen en
   `com.fasterxml.jackson.core:jackson-annotations`.
 - **Versiones que gestiona Boot.** En `server`, Flyway (12.4.0), Testcontainers (2.0.5) y PostgreSQL JDBC (42.7.13) se toman del BOM de Boot, aunque haya versiones más nuevas sueltas, para que todo sea coherente.
+- **Spring Boot 4 es modular.** El starter de Spring MVC se llama `spring-boot-starter-webmvc`, y la autoconfiguración de Flyway vive en
+  `spring-boot-starter-flyway`: con solo `flyway-core`, Flyway no se ejecuta. El soporte de PostgreSQL va aparte en `flyway-database-postgresql`.
+- **Testcontainers 2** renombró los módulos (`testcontainers-postgresql`, `testcontainers-junit-jupiter`) y la clase pasó a
+  `org.testcontainers.postgresql.PostgreSQLContainer`. La imagen de pruebas debe coincidir con la mayor del PostgreSQL de la VM.
 - **JUnit.** El BOM de JUnit se importa antes que el de Boot, así que todos los módulos usan JUnit 6.1.3 (Boot trae 6.0.3).
 - **Decisión pendiente para H1: JLine 3 o JLine 4.** `decisiones.md` dice JLine 3 (última: 3.30.17), pero ya existe JLine 4 (4.4.8, 2026-10-11). Hay que elegir en H1, probando cuál compila bien como native image.
 - Picocli, JLine, Bucket4j y el plugin de native image se declaran en `<properties>` cuando un módulo los use (H0-04 / H1).
