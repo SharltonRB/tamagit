@@ -23,7 +23,7 @@
 | Spring Boot | `org.springframework.boot:spring-boot-dependencies` | 4.1.1 | 2026-08-20 | https://spring.io/projects/spring-boot (marcada `current` en https://api.spring.io/projects/spring-boot/releases) |
 | JUnit | `org.junit:junit-bom` | 6.1.3 | 2026-08-07 | https://repo1.maven.org/maven2/org/junit/junit-bom/ |
 | Picocli | `info.picocli:picocli` | 4.7.7 | 2025-04-19 | https://repo1.maven.org/maven2/info/picocli/picocli/ |
-| JLine 3 | `org.jline:jline` | 3.30.17 | 2026-09-08 | https://repo1.maven.org/maven2/org/jline/jline/ |
+| JLine 4 | `org.jline:jline` | 4.4.8 | 2026-10-11 | https://repo1.maven.org/maven2/org/jline/jline/ |
 | Jackson 3 | `tools.jackson:jackson-bom` | 3.2.3 (Boot gestiona 3.1.5) | 2026-09-22 (3.1.5: 2026-07-08) | https://repo1.maven.org/maven2/tools/jackson/jackson-bom/ |
 | Jackson 2 | `com.fasterxml.jackson:jackson-bom` | 2.22.3 (Boot gestiona 2.21.5) | 2026-09-21 (2.21.5: 2026-07-07) | https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/ |
 | Flyway | `org.flywaydb:flyway-core` | 13.10.3 (Boot gestiona 12.4.0) | 2026-10-15 (12.4.0: 2026-04-14) | https://repo1.maven.org/maven2/org/flywaydb/flyway-core/ |
@@ -66,5 +66,7 @@ Todas con variante `linux/arm64/v8` (la VM de Oracle) y `linux/amd64`. Verificad
 - **Testcontainers 2** renombró los módulos (`testcontainers-postgresql`, `testcontainers-junit-jupiter`) y la clase pasó a
   `org.testcontainers.postgresql.PostgreSQLContainer`. La imagen de pruebas debe coincidir con la mayor del PostgreSQL de la VM.
 - **JUnit.** El BOM de JUnit se importa antes que el de Boot, así que todos los módulos usan JUnit 6.1.3 (Boot trae 6.0.3).
-- **Decisión pendiente para H1: JLine 3 o JLine 4.** `decisiones.md` dice JLine 3 (última: 3.30.17), pero ya existe JLine 4 (4.4.8, 2026-10-11). Hay que elegir en H1, probando cuál compila bien como native image.
+- **JLine 4, no JLine 3** (decidido el 2026-10-17, ver `decisiones.md` §2). JLine 4 exige Java 11+, quitó el proveedor JNA y las APIs
+  deprecadas (quedan JNI y FFM) y su jar trae metadatos de native image. No existe `picocli-shell-jline4`, pero Tamagit no usa REPL.
+  Plan B si no compila como native image en H1-05: JLine 3.30.17 (2026-09-08), cambiando solo la versión.
 - Picocli, JLine, Bucket4j y el plugin de native image se declaran en `<properties>` cuando un módulo los use (H0-04 / H1).

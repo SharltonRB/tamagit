@@ -24,7 +24,7 @@ procesos en segundo plano, Windows, más especies, integración con Pinghouse, H
 | **Monorepo Maven multi-módulo**: `tamagit-core`, `tamagit-cli`, `tamagit-server` | Las reglas del juego se escriben una sola vez (en `core`) y las usan cliente y servidor; un solo CI y un solo README. |
 | `core` **sin dependencias** (ni Spring, ni Picocli, ni Jackson) | Pruebas con JUnit puro y rápidas; ninguna reflexión que moleste a GraalVM. |
 | **Java 25 LTS + Maven** | LTS vigente; GraalVM 25 y AOT cache de Leyden como plan B de arranque. Maven ya está instalado. |
-| Cliente: **Picocli + JLine 3 + dibujo ANSI propio + Jackson** | JLine resuelve el modo crudo, el tamaño y las teclas; el dibujo lo controlamos nosotros. Lanterna es más de lo necesario. |
+| Cliente: **Picocli + JLine 4 + dibujo ANSI propio + Jackson** | JLine resuelve el modo crudo, el tamaño y las teclas; el dibujo lo controlamos nosotros. Lanterna es más de lo necesario. JLine 4 (y no 3) porque es la línea activa, usa FFM para la terminal y no hace falta compatibilidad con Java 8; si no compila como native image en H1-05, el plan B es JLine 3. |
 | Servidor: **Spring Boot (Web, Data JPA, Security, Validation, Actuator) + Flyway + PostgreSQL** | Es tu stack y tu despliegue común. SQLite alcanzaría por volumen, pero PostgreSQL te sirve para practicar el despliegue compartido. |
 | Pruebas: JUnit 5 en todo; **Testcontainers solo en `server`** | `core` es puro; `cli` se prueba con Picocli y un directorio temporal. |
 | Coordenadas: `io.github.sharltonrb`, paquete `io.github.sharltonrb.tamagit.{core,cli,server}` | Vinculadas a la cuenta de GitHub `SharltonRB`. |
