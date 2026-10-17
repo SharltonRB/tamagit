@@ -1,5 +1,7 @@
 # Tamagit
 
+![CI](https://github.com/SharltonRB/tamagit/actions/workflows/ci.yml/badge.svg)
+
 Un perezoso costarricense que vive en tu terminal y se alimenta de tus commits.
 
 ## Qué es
