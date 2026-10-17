@@ -40,6 +40,20 @@
 | `maven-failsafe-plugin` | 3.6.0 | 2026-08-31 | https://repo1.maven.org/maven2/org/apache/maven/plugins/maven-failsafe-plugin/ |
 | `maven-enforcer-plugin` | 3.6.3 | 2026-05-15 | https://repo1.maven.org/maven2/org/apache/maven/plugins/maven-enforcer-plugin/ |
 | `maven-wrapper-plugin` | 3.3.4 | 2025-09-08 | https://repo1.maven.org/maven2/org/apache/maven/plugins/maven-wrapper-plugin/ |
+| `maven-dependency-plugin` | 3.11.0 | 2026-05-24 | https://repo1.maven.org/maven2/org/apache/maven/plugins/maven-dependency-plugin/ |
+
+## Imágenes de Docker
+
+Todas con variante `linux/arm64/v8` (la VM de Oracle) y `linux/amd64`. Verificadas con `docker buildx imagetools inspect`.
+
+| Uso | Imagen | Base | Fuente |
+|---|---|---|---|
+| Etapa build del `Dockerfile` | `maven:3.10.0-eclipse-temurin-25-resolute` | Ubuntu 26.04 LTS, JDK 25 | https://hub.docker.com/_/maven |
+| Etapa final del `Dockerfile` | `eclipse-temurin:25.0.4.1_1-jre-resolute` | Ubuntu 26.04 LTS, JRE 25.0.4.1 | https://hub.docker.com/_/eclipse-temurin |
+| PostgreSQL (compose y Testcontainers) | `postgres:18-alpine` | Alpine, PostgreSQL 18.6 | https://hub.docker.com/_/postgres |
+
+- La JRE de Temurin no trae `curl` ni `wget`: el `Dockerfile` instala `curl` para el `HEALTHCHECK`.
+- Desde PostgreSQL 18 el volumen va en `/var/lib/postgresql` (`PGDATA=/var/lib/postgresql/18/docker`), no en `/var/lib/postgresql/data`.
 
 ## Notas para los siguientes hitos
 

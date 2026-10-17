@@ -1,0 +1,35 @@
+# Entorno de desarrollo: servidor + PostgreSQL.
+# Uso: cp .env.example .env && docker compose up --build
+# Las credenciales salen del .env (nunca se versiona).
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: tamagit
+      POSTGRES_USER: ${POSTGRES_USER:?Falta POSTGRES_USER en .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en .env}
+    volumes:
+      # Desde PostgreSQL 18 los datos viven bajo /var/lib/postgresql (no en .../data)
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d tamagit"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  server:
+    build: .
+    image: tamagit-server:local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/tamagit
+      DB_USER: ${POSTGRES_USER:?Falta POSTGRES_USER en .env}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en .env}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
