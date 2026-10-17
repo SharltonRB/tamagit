@@ -1,0 +1,22 @@
+# Maven
+target/
+dependency-reduced-pom.xml
+# Ojo: .mvn/wrapper/ NO se ignora; el wrapper de Maven se versiona (H0-03).
+
+# Java
+*.class
+*.log
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Sistema operativo
+.DS_Store
+
+# Secretos
+.env
+
+# Estado local de Tamagit (por si se prueba con un HOME dentro del repo)
+.tamagit/
